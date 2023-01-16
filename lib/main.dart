@@ -1,44 +1,72 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(const App());
 
-class MyApp extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return MyAppState();
-  }
-}
-
-class MyAppState extends State<MyApp> {
-  var questionIndex = 0;
-
-  void answerQuestion() {
-    setState(() {
-      questionIndex++;
-    });
-    print("Answer chosen");
-  }
+class App extends StatelessWidget {
+  const App();
 
   @override
   Widget build(BuildContext context) {
-    var questions = [
-      "What's your favorite color?",
-      "What's your favorite animal?",
-    ];
+    return const MaterialApp(home: NavigationExample());
+  }
+}
 
-    return MaterialApp(
-        home: Scaffold(
+class NavigationExample extends StatefulWidget {
+  const NavigationExample();
+
+  @override
+  State<NavigationExample> createState() => _NavigationExampleState();
+}
+
+class _NavigationExampleState extends State<NavigationExample> {
+  int currentPageIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
       appBar: AppBar(
-        title: Text("My First App"),
+        title: const Text('RepsTracker'),
       ),
-      body: Column(
-        children: <Widget>[
-          Text(questions[questionIndex]),
-          ElevatedButton(onPressed: answerQuestion, child: Text("Answer 1")),
-          ElevatedButton(onPressed: answerQuestion, child: Text("Answer 2")),
-          ElevatedButton(onPressed: answerQuestion, child: Text("Answer 3")),
+      bottomNavigationBar: NavigationBar(
+        onDestinationSelected: (int index) {
+          setState(() {
+            currentPageIndex = index;
+          });
+        },
+        selectedIndex: currentPageIndex,
+        destinations: const <Widget>[
+          NavigationDestination(
+            icon: Icon(Icons.history),
+            label: 'Log',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.calendar_month),
+            label: 'Calendar',
+          ),
+          NavigationDestination(
+            selectedIcon: Icon(Icons.bookmark),
+            icon: Icon(Icons.fitness_center),
+            label: 'Routines',
+          ),
         ],
       ),
-    ));
+      body: <Widget>[
+        Container(
+          color: Colors.red,
+          alignment: Alignment.center,
+          child: const Text('Page 1'),
+        ),
+        Container(
+          color: Colors.green,
+          alignment: Alignment.center,
+          child: const Text('Page 2'),
+        ),
+        Container(
+          color: Colors.blue,
+          alignment: Alignment.center,
+          child: const Text('Page 3'),
+        ),
+      ][currentPageIndex],
+    );
   }
 }
