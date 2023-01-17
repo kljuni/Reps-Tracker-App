@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_experiments/logs_screen.dart';
 
 void main() => runApp(const App());
 
@@ -44,7 +45,6 @@ class _NavigationExampleState extends State<NavigationExample> {
             label: 'Calendar',
           ),
           NavigationDestination(
-            selectedIcon: Icon(Icons.bookmark),
             icon: Icon(Icons.fitness_center),
             label: 'Routines',
           ),
@@ -52,9 +52,9 @@ class _NavigationExampleState extends State<NavigationExample> {
       ),
       body: <Widget>[
         Container(
-          color: Colors.red,
+          // color: Colors.red,
           alignment: Alignment.center,
-          child: const Text('Page 1'),
+          child: Logs(),
         ),
         Container(
           color: Colors.green,
