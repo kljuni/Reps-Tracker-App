@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:intl/intl.dart';
-
 import 'data/models/training.dart';
+import 'exercise_details.dart';
+import 'widgets/DateLog.dart';
 
 enum ExerciseCategory {
   Abs,
@@ -46,10 +43,188 @@ class _LogsState extends State<Logs> {
           sets: [Set(reps: 1, weight: 0)],
           name: "Finger press",
           category: ExerciseCategory.Forearms.toString()),
+      Exercise(sets: [
+        Set(reps: 10, weight: 50),
+        Set(reps: 12, weight: 50),
+        Set(reps: 15, weight: 50),
+        Set(reps: 15, weight: 50),
+      ], name: "Lounges", category: ExerciseCategory.Legs.toString()),
+      Exercise(
+          sets: [Set(reps: 15, weight: 30)],
+          name: "Squats",
+          category: ExerciseCategory.Legs.toString())
+    ]),
+    Training(date: DateTime.now(), name: "Midday session", exercises: [
+      Exercise(
+          sets: [Set(reps: 1, weight: 0)],
+          name: "Finger press",
+          category: ExerciseCategory.Forearms.toString()),
       Exercise(
           sets: [Set(reps: 10, weight: 50)],
-          name: "Lounges",
-          category: ExerciseCategory.Legs.toString()),
+          name: "Bench press",
+          category: ExerciseCategory.Chest.toString()),
+      Exercise(
+          sets: [Set(reps: 15, weight: 30)],
+          name: "Squats",
+          category: ExerciseCategory.Legs.toString())
+    ]),
+    Training(date: DateTime.now(), name: "Evening session", exercises: [
+      Exercise(
+          sets: [Set(reps: 1, weight: 0)],
+          name: "Finger press",
+          category: ExerciseCategory.Forearms.toString()),
+      Exercise(
+          sets: [Set(reps: 10, weight: 50)],
+          name: "Bench press",
+          category: ExerciseCategory.Chest.toString()),
+      Exercise(
+          sets: [Set(reps: 15, weight: 30)],
+          name: "Squats",
+          category: ExerciseCategory.Legs.toString())
+    ]),
+    Training(date: DateTime.now(), name: "Morning session", exercises: [
+      Exercise(
+          sets: [Set(reps: 1, weight: 0)],
+          name: "Finger press",
+          category: ExerciseCategory.Forearms.toString()),
+      Exercise(sets: [
+        Set(reps: 10, weight: 50),
+        Set(reps: 12, weight: 50),
+        Set(reps: 15, weight: 50),
+        Set(reps: 15, weight: 50),
+      ], name: "Lounges", category: ExerciseCategory.Legs.toString()),
+      Exercise(
+          sets: [Set(reps: 15, weight: 30)],
+          name: "Squats",
+          category: ExerciseCategory.Legs.toString())
+    ]),
+    Training(date: DateTime.now(), name: "Midday session", exercises: [
+      Exercise(
+          sets: [Set(reps: 1, weight: 0)],
+          name: "Finger press",
+          category: ExerciseCategory.Forearms.toString()),
+      Exercise(
+          sets: [Set(reps: 10, weight: 50)],
+          name: "Bench press",
+          category: ExerciseCategory.Chest.toString()),
+      Exercise(
+          sets: [Set(reps: 15, weight: 30)],
+          name: "Squats",
+          category: ExerciseCategory.Legs.toString())
+    ]),
+    Training(date: DateTime.now(), name: "Evening session", exercises: [
+      Exercise(
+          sets: [Set(reps: 1, weight: 0)],
+          name: "Finger press",
+          category: ExerciseCategory.Forearms.toString()),
+      Exercise(
+          sets: [Set(reps: 10, weight: 50)],
+          name: "Bench press",
+          category: ExerciseCategory.Chest.toString()),
+      Exercise(
+          sets: [Set(reps: 15, weight: 30)],
+          name: "Squats",
+          category: ExerciseCategory.Legs.toString())
+    ]),
+    Training(date: DateTime.now(), name: "Morning session", exercises: [
+      Exercise(
+          sets: [Set(reps: 1, weight: 0)],
+          name: "Finger press",
+          category: ExerciseCategory.Forearms.toString()),
+      Exercise(sets: [
+        Set(reps: 10, weight: 50),
+        Set(reps: 12, weight: 50),
+        Set(reps: 15, weight: 50),
+        Set(reps: 15, weight: 50),
+      ], name: "Lounges", category: ExerciseCategory.Legs.toString()),
+      Exercise(
+          sets: [Set(reps: 15, weight: 30)],
+          name: "Squats",
+          category: ExerciseCategory.Legs.toString())
+    ]),
+    Training(date: DateTime.now(), name: "Midday session", exercises: [
+      Exercise(
+          sets: [Set(reps: 1, weight: 0)],
+          name: "Finger press",
+          category: ExerciseCategory.Forearms.toString()),
+      Exercise(
+          sets: [Set(reps: 10, weight: 50)],
+          name: "Bench press",
+          category: ExerciseCategory.Chest.toString()),
+      Exercise(
+          sets: [Set(reps: 15, weight: 30)],
+          name: "Squats",
+          category: ExerciseCategory.Legs.toString())
+    ]),
+    Training(date: DateTime.now(), name: "Evening session", exercises: [
+      Exercise(
+          sets: [Set(reps: 1, weight: 0)],
+          name: "Finger press",
+          category: ExerciseCategory.Forearms.toString()),
+      Exercise(
+          sets: [Set(reps: 10, weight: 50)],
+          name: "Bench press",
+          category: ExerciseCategory.Chest.toString()),
+      Exercise(
+          sets: [Set(reps: 15, weight: 30)],
+          name: "Squats",
+          category: ExerciseCategory.Legs.toString())
+    ]),
+    Training(date: DateTime.now(), name: "Morning session", exercises: [
+      Exercise(
+          sets: [Set(reps: 1, weight: 0)],
+          name: "Finger press",
+          category: ExerciseCategory.Forearms.toString()),
+      Exercise(sets: [
+        Set(reps: 10, weight: 50),
+        Set(reps: 12, weight: 50),
+        Set(reps: 15, weight: 50),
+        Set(reps: 15, weight: 50),
+      ], name: "Lounges", category: ExerciseCategory.Legs.toString()),
+      Exercise(
+          sets: [Set(reps: 15, weight: 30)],
+          name: "Squats",
+          category: ExerciseCategory.Legs.toString())
+    ]),
+    Training(date: DateTime.now(), name: "Midday session", exercises: [
+      Exercise(
+          sets: [Set(reps: 1, weight: 0)],
+          name: "Finger press",
+          category: ExerciseCategory.Forearms.toString()),
+      Exercise(
+          sets: [Set(reps: 10, weight: 50)],
+          name: "Bench press",
+          category: ExerciseCategory.Chest.toString()),
+      Exercise(
+          sets: [Set(reps: 15, weight: 30)],
+          name: "Squats",
+          category: ExerciseCategory.Legs.toString())
+    ]),
+    Training(date: DateTime.now(), name: "Evening session", exercises: [
+      Exercise(
+          sets: [Set(reps: 1, weight: 0)],
+          name: "Finger press",
+          category: ExerciseCategory.Forearms.toString()),
+      Exercise(
+          sets: [Set(reps: 10, weight: 50)],
+          name: "Bench press",
+          category: ExerciseCategory.Chest.toString()),
+      Exercise(
+          sets: [Set(reps: 15, weight: 30)],
+          name: "Squats",
+          category: ExerciseCategory.Legs.toString())
+    ]),
+    Training(date: DateTime.now(), name: "Morning session", exercises: [
+      Exercise(
+          sets: [Set(reps: 1, weight: 0)],
+          name: "Finger press",
+          category: ExerciseCategory.Forearms.toString()),
+      Exercise(sets: [
+        Set(reps: 10, weight: 50),
+        Set(reps: 12, weight: 50),
+        Set(reps: 15, weight: 50),
+        Set(reps: 15, weight: 50),
+      ], name: "Lounges", category: ExerciseCategory.Legs.toString()),
       Exercise(
           sets: [Set(reps: 15, weight: 30)],
           name: "Squats",
@@ -73,36 +248,61 @@ class _LogsState extends State<Logs> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      itemCount: _logsHistory.length,
-      itemBuilder: (BuildContext context, int index) {
-        return ListTile(
-          onTap: () {
-            print('Clicked on item #$index'); // Print to console
-          },
-          title: Text(_logsHistory[index].name),
-          subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: _logsHistory[index]
-                  .exercises
-                  .map((item) =>
-                      new Text("${item.name} of ${item.sets.length} sets"))
-                  .toList()),
-          leading: Column(children: <Widget>[
-            Text(DateFormat('EEEE')
-                .format(_logsHistory[index].date)
-                .substring(0, 3)),
-            Text(_logsHistory[index].date.day.toString()),
-            Text(DateFormat('MMMM')
-                .format(_logsHistory[index].date)
-                .substring(0, 3))
-          ]),
-          trailing: Icon(Icons.edit),
-        );
-      },
-      separatorBuilder: (BuildContext context, int index) {
-        return const Divider();
-      },
+    return Container(
+      // padding: EdgeInsets.symmetric(vertical: 10, horizontal: 0),
+      child: ListView.separated(
+        itemCount: _logsHistory.length,
+        itemBuilder: (BuildContext context, int i) {
+          return Card(
+            elevation: 0,
+            color: Theme.of(context).canvasColor,
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ExerciseDetails(_logsHistory[i])),
+                );
+              },
+              child: Row(
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(left: 16, right: 22),
+                    child: DateLog(_logsHistory[i].date),
+                  ),
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.only(left: 0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(_logsHistory[i].name,
+                              style: Theme.of(context).textTheme.bodyText1),
+                          ..._logsHistory[i]
+                              .exercises
+                              .map((item) => new Text(
+                                    "${item.name} - ${item.sets.length} sets",
+                                    style:
+                                        Theme.of(context).textTheme.subtitle1,
+                                  ))
+                              .toList()
+                        ],
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(left: 20, right: 20),
+                    child: Icon(Icons.content_copy),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+        separatorBuilder: (BuildContext context, int index) {
+          return const Divider();
+        },
+      ),
     );
   }
 }
