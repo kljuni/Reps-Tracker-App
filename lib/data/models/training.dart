@@ -24,30 +24,21 @@ class Training {
   String toString() {
     return 'Training{name: $name, date: $date}';
   }
-
 }
 
 class Exercise {
   // final int id;
-  final List<Set> sets;
-  final String name;
+  String name;
   final String category;
+  int sets;
+  int reps;
+  double weight;
 
-  const Exercise({
+  Exercise({
     // required this.id,
-    required this.sets,
     required this.name,
     required this.category,
-  });
-}
-
-class Set {
-  // final int id;
-  final int reps;
-  final double weight;
-
-  const Set({
-    // required this.id,
+    required this.sets,
     required this.reps,
     required this.weight,
   });
