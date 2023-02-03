@@ -1,11 +1,11 @@
 class Training {
-  // final int? id;
+  final int id;
   final List<Exercise> exercises;
   final String name;
   final DateTime date;
 
-  const Training({
-    // this.id,
+  Training({
+    required this.id,
     required this.exercises,
     required this.name,
     required this.date,
@@ -18,16 +18,15 @@ class Training {
     };
   }
 
-  // TODO, add toDataExportMap ??
-
   @override
   String toString() {
     return 'Training{name: $name, date: $date}';
   }
 }
 
+
 class Exercise {
-  // final int id;
+  final int id;
   String name;
   final String category;
   int sets;
@@ -35,7 +34,7 @@ class Exercise {
   double weight;
 
   Exercise({
-    // required this.id,
+    required this.id,
     required this.name,
     required this.category,
     required this.sets,

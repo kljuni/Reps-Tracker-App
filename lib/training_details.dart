@@ -17,34 +17,15 @@ class TrainingDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           centerTitle: true,
           title: Text(monthString),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         body: Column(
           children: [
-            TrainingForm(),
-            Expanded(child: ExerciseList(training.exercises)),
-            ElevatedButton.icon(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.add,
-                  color: Colors.white,
-                  size: 30.0,
-                ),
-                label: Text("Add Exercise"),
-                style: ElevatedButton.styleFrom(
-                  shape: StadiumBorder(),
-                  backgroundColor: Theme.of(context).primaryColor,
-                )
-                // style: ButtonStyle(
-                //     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                //         // RoundedRectangleBorder(
-                //         //     borderRadius: BorderRadius.circular(18.0),
-                //         //     side: BorderSide(color: Colors.red))
-                //             ))
-                )
+            TrainingForm(training),
+            Flexible(fit: FlexFit.loose, child: ExerciseList(training)),
           ],
         ));
   }

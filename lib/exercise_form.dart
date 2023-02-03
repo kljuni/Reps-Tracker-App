@@ -1,33 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'data/models/training.dart';
+import 'training_list_model.dart';
 
-class ExerciseForm extends StatefulWidget {
+class ExerciseForm extends StatelessWidget {
   final Exercise exercise;
 
-  ExerciseForm(this.exercise);
+  ExerciseForm(this.exercise) {
+    _setsController.text = exercise.sets.toString();
+    _repsController.text = exercise.reps.toString();
+    _weightController.text = exercise.weight.toString();
+  }
 
-  @override
-  State<ExerciseForm> createState() => _ExerciseFormState();
-}
-
-class _ExerciseFormState extends State<ExerciseForm> {
   final _setsController = TextEditingController();
   final _repsController = TextEditingController();
   final _weightController = TextEditingController();
-
   final _formKey = GlobalKey<FormState>();
 
   @override
-  void initState() {
-    super.initState();
-    _setsController.text = widget.exercise.sets.toString();
-    _repsController.text = widget.exercise.reps.toString();
-    _weightController.text = widget.exercise.weight.toString();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    // final trainings = Provider.of<TrainingsModel>(context).training;
+    // var training = trainings.firstWhere((item) => item.id == 1);
+    // var exercise = training.exercises.firstWhere((item) => item.id == 1);
+
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
       child: Form(
@@ -40,7 +36,7 @@ class _ExerciseFormState extends State<ExerciseForm> {
               child: Row(
                 children: [
                   Text(
-                    widget.exercise.name,
+                    exercise.name,
                     style: Theme.of(context).textTheme.headline3,
                   ),
                 ],

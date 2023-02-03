@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_experiments/logs_screen.dart';
+
+import 'screen_navigator.dart';
 
 void main() => runApp(const App());
 
@@ -22,10 +23,11 @@ class App extends StatelessWidget {
           // text styling for headlines, titles, bodies of text, and more.
           textTheme: const TextTheme(
             headline2: TextStyle(fontSize: 22.0, color: Colors.black),
-            headline3: TextStyle(fontSize: 16.0, color: Colors.black),
+            headline3: TextStyle(fontSize: 18.0, color: Colors.black),
             headline4: TextStyle(fontSize: 12.0, color: Colors.black),
             bodyText1: TextStyle(fontSize: 16.0, color: Colors.black),
             subtitle1: TextStyle(fontSize: 12.0, color: Colors.grey),
+            button: TextStyle(fontSize: 15.0, color: Colors.white)
           ),
 
           inputDecorationTheme: const InputDecorationTheme(
@@ -37,65 +39,6 @@ class App extends StatelessWidget {
             ),
           ),
         ),
-        home: NavigationExample());
-  }
-}
-
-class NavigationExample extends StatefulWidget {
-  const NavigationExample();
-
-  @override
-  State<NavigationExample> createState() => _NavigationExampleState();
-}
-
-class _NavigationExampleState extends State<NavigationExample> {
-  int currentPageIndex = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('RepsTracker'),
-      ),
-      bottomNavigationBar: NavigationBar(
-        onDestinationSelected: (int index) {
-          setState(() {
-            currentPageIndex = index;
-          });
-        },
-        selectedIndex: currentPageIndex,
-        destinations: const <Widget>[
-          NavigationDestination(
-            icon: Icon(Icons.history),
-            label: 'Log',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.calendar_month),
-            label: 'Calendar',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.fitness_center),
-            label: 'Routines',
-          ),
-        ],
-      ),
-      body: <Widget>[
-        Container(
-          // color: Colors.red,
-          alignment: Alignment.center,
-          child: Logs(),
-        ),
-        Container(
-          color: Colors.green,
-          alignment: Alignment.center,
-          child: const Text('Page 2'),
-        ),
-        Container(
-          color: Colors.blue,
-          alignment: Alignment.center,
-          child: const Text('Page 3'),
-        ),
-      ][currentPageIndex],
-    );
+        home: ScreenNavigator());
   }
 }

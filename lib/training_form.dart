@@ -1,24 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:date_field/date_field.dart';
+
+import 'data/models/training.dart';
+import 'utils/helpers/text_helpers.dart';
 
 class TrainingForm extends StatefulWidget {
+  final Training _training;
+
+  TrainingForm(this._training);
+
   @override
   _TrainingFormState createState() => _TrainingFormState();
 }
 
 class _TrainingFormState extends State<TrainingForm> {
   final _formKey = GlobalKey<FormState>();
-  String _name = "Ivan's Test";
   final _nameController = TextEditingController();
-  DateTime _exercise_date = DateTime.now();
-  DateTime _startTime = DateTime.now();
-  DateTime _endTime = DateTime.now();
+  late DateTime _exercise_date;
+  late TimeOfDay _startTime;
 
   @override
   void initState() {
     super.initState();
-    _nameController.text = 'Exercise name TODO';
+    _nameController.text = widget._training.name;
+    _exercise_date = widget._training.date;
+    _startTime = TimeOfDay.fromDateTime(widget._training.date);
   }
 
   Future<DateTime?> selectDate(DateTime initialDate) async {
@@ -31,27 +37,10 @@ class _TrainingFormState extends State<TrainingForm> {
     return selectedDate;
   }
 
-  void _presentDatePicker() {
-    showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2019),
-      lastDate: DateTime.now(),
-    ).then((pickedDate) {
-      if (pickedDate == null) {
-        return;
-      }
-      setState(() {
-        _exercise_date = pickedDate;
-      });
-    });
-    print('...');
-  }
-
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top:15, bottom: 25),
+      padding: const EdgeInsets.only(top: 15, bottom: 25),
       child: Form(
         key: _formKey,
         child: Container(
@@ -97,46 +86,36 @@ class _TrainingFormState extends State<TrainingForm> {
                     ),
                   ),
                   Expanded(
-                    flex: 1,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 6),
-                      child: TextFormField(
-                        style: TextStyle(fontSize: 18),
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.all(15),
-                          isDense: true,
-                          labelText: DateFormat.yMd().format(_startTime),
-                        ),
-                        onTap: () async {
-                          final selectedDateA = await selectDate(_startTime);
-                          if (selectedDateA != null) {
-                            setState(() {
-                              _startTime = selectedDateA;
-                            });
-                          }
-                        },
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: TextFormField(
-                      style: TextStyle(fontSize: 18),
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(15),
-                        isDense: true,
-                        labelText: DateFormat.yMd().format(_endTime),
-                      ),
-                      onTap: () async {
-                        final selectedDateA = await selectDate(_endTime);
-                        if (selectedDateA != null) {
-                          setState(() {
-                            _endTime = selectedDateA;
-                          });
-                        }
-                      },
-                    ),
-                  ),
+                      flex: 1,
+                      child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 6),
+                          child: TextFormField(
+                              style: TextStyle(fontSize: 18),
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.all(15),
+                                isDense: true,
+                                labelText: DateFormat('HH:mm').format(
+                                    DateFormat.Hm().parse(
+                                        _startTime.format(context).toString())),
+                              ),
+                              onTap: () async {
+                                FocusScope.of(context)
+                                    .requestFocus(new FocusNode());
+                                TimeOfDay? pickedTime = await showTimePicker(
+                                  initialTime: TimeOfDay.now(),
+                                  context: context,
+                                );
+
+                                if (pickedTime != null) {
+                                  setState(() {
+                                    _nameController.text =
+                                        getDefaultName(pickedTime.hour);
+                                    _startTime = pickedTime;
+                                  });
+                                } else {
+                                  print("Time is not selected");
+                                }
+                              }))),
                 ],
               ),
             ],
@@ -145,11 +124,4 @@ class _TrainingFormState extends State<TrainingForm> {
       ),
     );
   }
-
-  // void _submitForm() {
-  //   if (_formKey.currentState.validate()) {
-  //     _formKey.currentState.save();
-  //     // Do something with the data.
-  //   }
-  // }
 }
