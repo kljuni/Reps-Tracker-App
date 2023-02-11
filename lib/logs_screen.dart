@@ -4,26 +4,40 @@ import 'training_details.dart';
 import 'training_list_model.dart';
 import 'widgets/DateLog.dart';
 
-enum ExerciseCategory {
-  Abs,
-  Back,
-  Biceps,
-  Cardio,
-  Chest,
-  Forearms,
-  Legs,
-  Shoulders,
-  Triceps
+class ExerciseCategory {
+  static final Map<String, List<String>> exercises = {
+    'Abs': ["Crunch", "Plank", "Side Plank", "Leg Raises"],
+    'Back': [
+      "Pull Ups",
+      "Chin Ups",
+      "Bent-over Row",
+      "Deadlift",
+      "Hyper Extension"
+    ],
+    'Biceps': ["Dumbbell Curl", "Slow Chin Ups"],
+    'Cardio': ["Running", "Cycling", "Walking", "Hiking"],
+    'Chest': ["Push Ups", "Bench Press"],
+    'Forearms': ["Finger Hanging", "Pinch"],
+    'Legs': ["Squat", "Romanian deadlift"],
+    'Shoulders': ["Dumbbell Press", "Dumbbell lateral raise"],
+    'Triceps': ["Dumbbell Extension", "Narrow-Grip Push Ups"]
+  };
+
+  static List<String>? getExercisesForKey(String key) {
+    return exercises[key];
+  }
 }
 
 class Logs extends StatelessWidget {
+  final TrainingModel trainingsModel;
 
+  Logs(this.trainingsModel);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Consumer<TrainingModel>(builder: (context, data, child) {
-        var allTrainings = Provider.of<TrainingModel>(context, listen: false).allTrainings;
+        var allTrainings = data.allTrainings;
         return ListView.separated(
           itemCount: allTrainings.length,
           itemBuilder: (BuildContext context, int i) {
@@ -38,7 +52,7 @@ class Logs extends StatelessWidget {
                     MaterialPageRoute(
                       builder: (context) =>
                           ChangeNotifierProvider<TrainingModel>.value(
-                        value: Provider.of<TrainingModel>(context),
+                        value: trainingsModel,
                         child: TrainingDetails(training),
                       ),
                     ),
@@ -58,14 +72,12 @@ class Logs extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(allTrainings[i].name,
-                                style:
-                                    Theme.of(context).textTheme.bodyText1),
+                                style: Theme.of(context).textTheme.bodyText1),
                             ...training.exercises
                                 .map((item) => new Text(
                                       "${item.name} - ${item.sets} sets - ${item.reps} reps",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .subtitle1,
+                                      style:
+                                          Theme.of(context).textTheme.subtitle1,
                                     ))
                                 .toList()
                           ],

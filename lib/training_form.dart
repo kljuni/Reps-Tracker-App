@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_experiments/data/database.dart';
+import 'package:flutter_experiments/training_list_model.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import 'data/models/training.dart';
 import 'utils/helpers/text_helpers.dart';
@@ -17,14 +20,12 @@ class _TrainingFormState extends State<TrainingForm> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   late DateTime _exercise_date;
-  late TimeOfDay _startTime;
 
   @override
   void initState() {
     super.initState();
     _nameController.text = widget._training.name;
     _exercise_date = widget._training.date;
-    _startTime = TimeOfDay.fromDateTime(widget._training.date);
   }
 
   Future<DateTime?> selectDate(DateTime initialDate) async {
@@ -47,24 +48,43 @@ class _TrainingFormState extends State<TrainingForm> {
           padding: EdgeInsets.only(top: 15, left: 15, right: 15),
           child: Column(
             children: <Widget>[
-              Container(
-                margin: EdgeInsets.only(bottom: 8),
-                child: TextFormField(
-                    controller: _nameController,
-                    style: TextStyle(fontSize: 18),
-                    decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(15),
-                        isDense: true,
-                        labelText: 'Name'),
-                    validator: (value) {
-                      if (value == null || value.length == 0) {
-                        return 'Please enter a name';
-                      }
-                      return null;
-                    }),
-              ),
               Row(
                 children: [
+                  Expanded(
+                    flex: 2,
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 5),
+                      child: TextFormField(
+                        controller: _nameController,
+                        style: TextStyle(fontSize: 18),
+                        decoration: InputDecoration(
+                            contentPadding: EdgeInsets.all(15),
+                            isDense: true,
+                            labelText: 'Name'),
+                        validator: (value) {
+                          if (value == null || value.length == 0) {
+                            return 'Please enter a name';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) async {
+                          print('First text field: $value');
+                          try {
+                            final trainingUpdate = Training(
+                                id: widget._training.id,
+                                exercises: widget._training.exercises,
+                                name: value,
+                                date: widget._training.date);
+                            await DbManager().updateTraining(trainingUpdate);
+                            Provider.of<TrainingModel>(context, listen: false)
+                                .updateTraining(trainingUpdate);
+                          } catch (e) {
+                            print("Error updating training: $e");
+                          }
+                        },
+                      ),
+                    ),
+                  ),
                   Expanded(
                     flex: 1,
                     child: TextFormField(
@@ -78,44 +98,28 @@ class _TrainingFormState extends State<TrainingForm> {
                         FocusScope.of(context).requestFocus(new FocusNode());
                         final selectedDateA = await selectDate(_exercise_date);
                         if (selectedDateA != null) {
-                          setState(() {
-                            _exercise_date = selectedDateA;
-                          });
+                          try {
+                            final trainingUpdate = Training(
+                                id: widget._training.id,
+                                exercises: [],
+                                name: _nameController.text,
+                                date: selectedDateA);
+                            await DbManager().updateTraining(trainingUpdate);
+
+                            Provider.of<TrainingModel>(context, listen: false)
+                                .updateTraining(trainingUpdate);
+
+                            // await DbManager().updateTraining(training);
+                            setState(() {
+                              _exercise_date = selectedDateA;
+                            });
+                          } catch (e) {
+                            print("Error updating training: $e");
+                          }
                         }
                       },
                     ),
                   ),
-                  Expanded(
-                      flex: 1,
-                      child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 6),
-                          child: TextFormField(
-                              style: TextStyle(fontSize: 18),
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.all(15),
-                                isDense: true,
-                                labelText: DateFormat('HH:mm').format(
-                                    DateFormat.Hm().parse(
-                                        _startTime.format(context).toString())),
-                              ),
-                              onTap: () async {
-                                FocusScope.of(context)
-                                    .requestFocus(new FocusNode());
-                                TimeOfDay? pickedTime = await showTimePicker(
-                                  initialTime: TimeOfDay.now(),
-                                  context: context,
-                                );
-
-                                if (pickedTime != null) {
-                                  setState(() {
-                                    _nameController.text =
-                                        getDefaultName(pickedTime.hour);
-                                    _startTime = pickedTime;
-                                  });
-                                } else {
-                                  print("Time is not selected");
-                                }
-                              }))),
                 ],
               ),
             ],

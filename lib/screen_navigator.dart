@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'data/database.dart';
 import 'data/models/training.dart';
 import 'logs_screen.dart';
 import 'training_details.dart';
@@ -8,157 +11,131 @@ import 'training_list_model.dart';
 import 'utils/helpers/text_helpers.dart';
 
 class ScreenNavigator extends StatefulWidget {
-  const ScreenNavigator();
-
   @override
   State<ScreenNavigator> createState() => _ScreenNavigatorState();
 }
 
 class _ScreenNavigatorState extends State<ScreenNavigator> {
+  late Future<List<Training>> _trainings;
+  late TrainingModel _trainingsModel;
   int currentPageIndex = 0;
 
-  final List<Training> _logsHistory = [
-    Training(id: 1, date: DateTime.now(), name: "Evening session", exercises: [
-      Exercise(
-          id: 1,
-          sets: 5,
-          weight: 10,
-          reps: 10,
-          name: "Finger press",
-          category: ExerciseCategory.Forearms.toString()),
-      Exercise(
-          id: 2,
-          sets: 5,
-          weight: 10,
-          reps: 10,
-          name: "Bench press",
-          category: ExerciseCategory.Chest.toString()),
-      Exercise(
-          id: 3,
-          sets: 5,
-          weight: 10,
-          reps: 10,
-          name: "Squats",
-          category: ExerciseCategory.Legs.toString())
-    ]),
-    Training(id: 2, date: DateTime.now(), name: "Morning session", exercises: [
-      Exercise(
-          id: 4,
-          sets: 5,
-          weight: 10,
-          reps: 10,
-          name: "Finger press",
-          category: ExerciseCategory.Forearms.toString()),
-      Exercise(
-          id: 5,
-          sets: 5,
-          weight: 10,
-          reps: 10,
-          name: "Lounges",
-          category: ExerciseCategory.Legs.toString()),
-      Exercise(
-          id: 6,
-          sets: 5,
-          weight: 10,
-          reps: 10,
-          name: "Squats",
-          category: ExerciseCategory.Legs.toString())
-    ]),
-    Training(id: 3, date: DateTime.now(), name: "Midday session", exercises: [
-      Exercise(
-          id: 7,
-          sets: 5,
-          weight: 10,
-          reps: 10,
-          name: "Finger press",
-          category: ExerciseCategory.Forearms.toString()),
-      Exercise(
-          id: 8,
-          sets: 5,
-          weight: 10,
-          reps: 10,
-          name: "Bench press",
-          category: ExerciseCategory.Chest.toString()),
-      Exercise(
-          id: 9,
-          sets: 5,
-          weight: 10,
-          reps: 10,
-          name: "Squats",
-          category: ExerciseCategory.Legs.toString())
-    ]),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _trainingsModel = TrainingModel();
+    _trainings = fetchTrainings();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final _trainingsModel = TrainingModel(_logsHistory);
+    
+
     return ChangeNotifierProvider(
-      create: (context) => _trainingsModel,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('RepsTracker'),
-        ),
-        bottomNavigationBar: NavigationBar(
-          onDestinationSelected: (int index) {
-            setState(() {
-              currentPageIndex = index;
-            });
-          },
-          selectedIndex: currentPageIndex,
-          destinations: const <Widget>[
-            NavigationDestination(
-              icon: Icon(Icons.history),
-              label: 'Log',
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.calendar_month),
-              label: 'Calendar',
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.fitness_center),
-              label: 'Routines',
-            ),
-          ],
-        ),
-        body: <Widget>[
-          Container(
-            // color: Colors.red,
-            alignment: Alignment.center,
-            child: Logs(),
-          ),
-          Container(
-            color: Colors.green,
-            alignment: Alignment.center,
-            child: const Text('Page 2'),
-          ),
-          Container(
-            color: Colors.blue,
-            alignment: Alignment.center,
-            child: const Text('Page 3'),
-          ),
-        ][currentPageIndex],
-        floatingActionButton: currentPageIndex == 0
-            ? FloatingActionButton(
-                child: Icon(Icons.add),
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    var startDateTime = DateTime.now();
-                    var blankTraining = Training(
-                        id: 0,
-                        exercises: [],
-                        name: getDefaultName(startDateTime.hour),
-                        date: startDateTime);
+        create: (context) => _trainingsModel,
+        child: FutureBuilder<List<Training>>(
+            future: _trainings,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                Future.delayed(Duration.zero, () {
+                  Provider.of<TrainingModel>(context, listen: false)
+                      .addAllTrainings(snapshot.data!);
+                });
 
-                    // TODO, make a SQLite call to make a new training, and add it to the ChangeNotifier
+                return Scaffold(
+                  appBar: AppBar(
+                    title: const Text('RepsTracker'),
+                  ),
+                  bottomNavigationBar: NavigationBar(
+                    onDestinationSelected: (int index) {
+                      setState(() {
+                        currentPageIndex = index;
+                      });
+                    },
+                    selectedIndex: currentPageIndex,
+                    destinations: const <Widget>[
+                      NavigationDestination(
+                        icon: Icon(Icons.history),
+                        label: 'Log',
+                      ),
+                      NavigationDestination(
+                        icon: Icon(Icons.calendar_month),
+                        label: 'Calendar',
+                      ),
+                      NavigationDestination(
+                        icon: Icon(Icons.fitness_center),
+                        label: 'Routines',
+                      ),
+                    ],
+                  ),
+                  body: <Widget>[
+                    Container(
+                      // color: Colors.red,
+                      alignment: Alignment.center,
+                      child: Logs(_trainingsModel),
+                    ),
+                    Container(
+                      color: Colors.green,
+                      alignment: Alignment.center,
+                      child: const Text('Page 2'),
+                    ),
+                    Container(
+                      color: Colors.blue,
+                      alignment: Alignment.center,
+                      child: const Text('Page 3'),
+                    ),
+                  ][currentPageIndex],
+                  floatingActionButton: currentPageIndex == 0
+                      ? FloatingActionButton(
+                          child: Icon(Icons.add),
+                          onPressed: () async {
+                            await _insert().then((value) async {
+                              await Future.delayed(Duration.zero, () {
+                                Provider.of<TrainingModel>(context,
+                                        listen: false)
+                                    .addOneTraining(value);
+                              });
+                              return value;
+                            }).then((value) {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return ChangeNotifierProvider<
+                                    TrainingModel>.value(
+                                  value: _trainingsModel,
+                                  child: TrainingDetails(value),
+                                );
+                              }));
+                            });
+                          })
+                      : null,
+                );
+              } else if (snapshot.hasError) {
+                return Text("${snapshot.error}");
+              }
 
-                    return ChangeNotifierProvider<TrainingModel>.value(
-                      value: _trainingsModel,
-                      child: TrainingDetails(blankTraining),
-                    );
-                  }));
-                })
-            : null,
-      ),
-    );
+              return Scaffold(
+                body: Center(
+                  child: Container(
+                    // color: Colors.white,
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+              );
+            }));
+  }
+
+  Future<List<Training>> fetchTrainings() async {
+    final database = await DbManager();
+    return database.getTrainings();
+  }
+
+  Future<Training> _insert() async {
+    final startDateTime = DateTime.now();
+    final database = await DbManager();
+    return await database.createNewTraining(Training(
+        id: 0,
+        date: startDateTime,
+        name: getDefaultName(startDateTime.hour),
+        exercises: []));
   }
 }

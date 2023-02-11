@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'logs_screen.dart';
+import 'select_exercise.dart';
 
 class SelectCategory extends StatelessWidget {
   const SelectCategory({Key? key}) : super(key: key);
-
-  // ignore: todo
-  // TODO, add call to fill exericse list
 
   @override
   Widget build(BuildContext context) {
@@ -25,16 +23,29 @@ class SelectCategory extends StatelessWidget {
             height: constraints.maxHeight - kToolbarHeight,
             child: ListView.separated(
               physics: BouncingScrollPhysics(),
-              itemCount: ExerciseCategory.values.length,
+              itemCount: ExerciseCategory.exercises.length,
               itemBuilder: (BuildContext context, int i) {
+                final category = ExerciseCategory.exercises.keys.elementAt(i);
+                var exercises; 
+                if (ExerciseCategory.exercises.containsKey(category)) {
+                  exercises = ExerciseCategory.exercises[category] ?? [];
+                }
+
                 return InkWell(
-                  onTap: () {
-                    // Your onTap code here
+                  onTap: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              SelectExercise(category, exercises)),
+                    ).then((exercise) {
+                      Navigator.pop(context, exercise);
+                    });
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(18.0),
                     child: Text(
-                      ExerciseCategory.values[i].name,
+                      category,
                       style: Theme.of(context).textTheme.headline3,
                     ),
                   ),

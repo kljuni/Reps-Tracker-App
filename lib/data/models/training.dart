@@ -13,20 +13,15 @@ class Training {
 
   Map<String, dynamic> toMap() {
     return {
-      'name': name,
-      'date': date,
+      "name": name,
+      "date": date.millisecondsSinceEpoch,
     };
-  }
-
-  @override
-  String toString() {
-    return 'Training{name: $name, date: $date}';
   }
 }
 
-
 class Exercise {
   final int id;
+  final int training_id;
   String name;
   final String category;
   int sets;
@@ -35,10 +30,32 @@ class Exercise {
 
   Exercise({
     required this.id,
+    required this.training_id,
     required this.name,
     required this.category,
     required this.sets,
     required this.reps,
     required this.weight,
   });
+
+  Map<String, dynamic> toMap(int training_id) {
+    return {
+      'training_id': training_id,
+      'name': name,
+      'category': category,
+      'sets': sets,
+      'reps': reps,
+      'weight': weight,
+    };
+  }
+
+  Map<String, dynamic> toMapWithoutTrainingId() {
+    return {
+      'name': name,
+      'category': category,
+      'sets': sets,
+      'reps': reps,
+      'weight': weight,
+    };
+  }
 }

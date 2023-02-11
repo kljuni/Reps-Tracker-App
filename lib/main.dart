@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_experiments/data/database.dart';
 import 'screen_navigator.dart';
 
-void main() => runApp(const App());
+void main() async {
+  DbManager();
+  runApp(App());
+}
 
 class App extends StatelessWidget {
   const App();
@@ -22,13 +25,12 @@ class App extends StatelessWidget {
           // Define the default `TextTheme`. Use this to specify the default
           // text styling for headlines, titles, bodies of text, and more.
           textTheme: const TextTheme(
-            headline2: TextStyle(fontSize: 22.0, color: Colors.black),
-            headline3: TextStyle(fontSize: 18.0, color: Colors.black),
-            headline4: TextStyle(fontSize: 12.0, color: Colors.black),
-            bodyText1: TextStyle(fontSize: 16.0, color: Colors.black),
-            subtitle1: TextStyle(fontSize: 12.0, color: Colors.grey),
-            button: TextStyle(fontSize: 15.0, color: Colors.white)
-          ),
+              headline2: TextStyle(fontSize: 22.0, color: Colors.black),
+              headline3: TextStyle(fontSize: 18.0, color: Colors.black),
+              headline4: TextStyle(fontSize: 12.0, color: Colors.black),
+              bodyText1: TextStyle(fontSize: 16.0, color: Colors.black),
+              subtitle1: TextStyle(fontSize: 12.0, color: Colors.grey),
+              button: TextStyle(fontSize: 15.0, color: Colors.white)),
 
           inputDecorationTheme: const InputDecorationTheme(
             enabledBorder: OutlineInputBorder(
