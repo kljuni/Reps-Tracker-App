@@ -113,8 +113,19 @@ class DbManager {
     return trainings;
   }
 
-  Future<int> createNewExercise(int trainingId, Exercise exercise) async {
-    return (await db).insert("exercise", exercise.toMap(trainingId));
+  // Future<int> createNewExercise(int trainingId, Exercise exercise) async {
+  //   return (await db).insert("exercise", exercise.toMap(trainingId));
+  // }
+  
+  Future<bool> createNewExercise(Exercise exercise) async {
+      try {
+      final result = await (await db).insert("exercise", exercise.toMap(exercise.training_id));
+
+      return result > 0;
+    } catch (e) {
+      print(e);
+      return false;
+    }
   }
 
   Future<void> updateTraining(Training training) async {
@@ -125,7 +136,22 @@ class DbManager {
       whereArgs: [training.id],
     );
   }
-  
+
+  Future<bool> deleteTraining(Training training) async {
+    try {
+      final result = await (await db).delete(
+        'training',
+        where: "id = ?",
+        whereArgs: [training.id],
+      );
+
+      return result > 0;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
   Future<void> updateExercise(Exercise exercise) async {
     (await db).update(
       'exercise',

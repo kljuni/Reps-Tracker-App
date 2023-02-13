@@ -47,12 +47,9 @@ class ExerciseList extends StatelessWidget {
                     final Exercise exercise = await Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const SelectCategory()),
+                          builder: (context) => SelectCategory(_training)),
                     );
-                    final dbExercise =
-                        await _insertExercise(_training.id, exercise);
-                    Provider.of<TrainingModel>(context, listen: false)
-                        .addExercise(_training.id, dbExercise);
+                    Provider.of<TrainingModel>(context, listen: false).addExercise(exercise);
                   },
                   icon: Icon(
                     Icons.add,
@@ -61,7 +58,7 @@ class ExerciseList extends StatelessWidget {
                   ),
                   label: Text(
                     "Add Exercise",
-                    style: Theme.of(context).textTheme.button,
+                    style: Theme.of(context).textTheme.labelLarge,
                   ),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.all(15),
@@ -127,18 +124,5 @@ class ExerciseList extends StatelessWidget {
       },
       separatorBuilder: (_, __) => Divider(height: 0.5),
     );
-  }
-
-  Future<Exercise> _insertExercise(int trainingId, Exercise exercise) async {
-    final database = await DbManager();
-    final exerciseId = await database.createNewExercise(trainingId, exercise);
-    return Exercise(
-        id: exerciseId,
-        training_id: exercise.training_id,
-        name: exercise.name,
-        category: exercise.category,
-        sets: exercise.sets,
-        reps: exercise.reps,
-        weight: exercise.weight);
   }
 }

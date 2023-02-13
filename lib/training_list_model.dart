@@ -35,6 +35,21 @@ class TrainingModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void deleteTraining(Training training) async {
+    try {
+      final success = await DbManager().deleteTraining(training);
+
+      if (success) {
+        _trainings.removeWhere((item) => item.id == training.id);
+        notifyListeners();
+      } else {
+        throw Exception("Could not delete training");
+      }
+    } catch (e) {
+      print("Error adding sets to exericse: $e");
+    }
+  }
+
   void addSetToExericse(int trainingId, int exerciseId, [int sets = 1]) async {
     try {
       var training = _trainings.firstWhere((item) => item.id == trainingId);
@@ -86,17 +101,33 @@ class TrainingModel extends ChangeNotifier {
       exercise.weight = weight;
       await DbManager().updateExercise(exercise);
     } catch (e) {
-      print("Error adding reps to exericse: $e");
+      print("Error adding reps to exercise: $e");
     }
 
     notifyListeners();
   }
 
-  void addExercise(int trainingId, Exercise exercise) {
-    var training = _trainings.firstWhere((item) => item.id == trainingId);
-    training.exercises.add(exercise);
-    // ignore: todo
-    // TODO, add error managament if id not found
-    notifyListeners();
+  void addExercise(Exercise exercise) async {
+    try {
+      final success = await DbManager().createNewExercise(exercise);
+      if (success) {
+        var training = _trainings.firstWhere((item) => item.id == exercise.training_id);
+        training.exercises.add(exercise);
+        notifyListeners();
+      } else {
+        throw Exception("Could not add exercise");
+      }
+      
+    } catch (e) {
+      print("Error adding exercise: $e");
+    }
+  }
+
+  void deleteExercise(Exercise exercise) {
+    // var training = _trainings.firstWhere((item) => item.id == exercise.training_id);
+    // training.exercises.add(exercise);
+    // // ignore: todo
+    // // TODO, add error managament if id not found
+    // notifyListeners();
   }
 }

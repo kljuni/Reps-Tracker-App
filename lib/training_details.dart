@@ -8,6 +8,8 @@ import 'package:provider/provider.dart';
 
 import 'data/models/training.dart';
 
+enum TrainingMenuItem { delete }
+
 class TrainingDetails extends StatelessWidget {
   final Training training;
   late final String monthString;
@@ -24,7 +26,28 @@ class TrainingDetails extends StatelessWidget {
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
             centerTitle: true,
-            title: Text(monthString),
+            title: Text(
+              monthString,
+              style: Theme.of(context).appBarTheme.titleTextStyle,
+            ),
+            actions: [
+              PopupMenuButton<TrainingMenuItem>(onSelected: (value) {
+                executeMenuAction(value, context);
+              }, itemBuilder: (context) {
+                return [
+                  PopupMenuItem<TrainingMenuItem>(
+                    child: Text(
+                      "Delete",
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelLarge
+                          ?.apply(color: Colors.black),
+                    ),
+                    value: TrainingMenuItem.delete,
+                  )
+                ];
+              })
+            ],
           ),
           body: Column(
             children: [
@@ -33,5 +56,17 @@ class TrainingDetails extends StatelessWidget {
             ],
           ));
     });
+  }
+
+  executeMenuAction(TrainingMenuItem action, BuildContext context) {
+    switch (action) {
+      case TrainingMenuItem.delete:
+        {
+          Provider.of<TrainingModel>(context, listen: false)
+              .deleteTraining(training);
+          Navigator.pop(context);
+        }
+        break;
+    }
   }
 }

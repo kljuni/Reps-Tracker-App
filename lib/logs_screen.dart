@@ -72,12 +72,13 @@ class Logs extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(allTrainings[i].name,
-                                style: Theme.of(context).textTheme.bodyText1),
+                                style: Theme.of(context).textTheme.bodyLarge),
                             ...training.exercises
                                 .map((item) => new Text(
                                       "${item.name} - ${item.sets} sets - ${item.reps} reps",
-                                      style:
-                                          Theme.of(context).textTheme.subtitle1,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleLarge,
                                     ))
                                 .toList()
                           ],

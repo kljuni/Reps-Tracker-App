@@ -29,8 +29,6 @@ class _ScreenNavigatorState extends State<ScreenNavigator> {
 
   @override
   Widget build(BuildContext context) {
-    
-
     return ChangeNotifierProvider(
         create: (context) => _trainingsModel,
         child: FutureBuilder<List<Training>>(
@@ -44,7 +42,10 @@ class _ScreenNavigatorState extends State<ScreenNavigator> {
 
                 return Scaffold(
                   appBar: AppBar(
-                    title: const Text('RepsTracker'),
+                    title: Text(
+                      'RepsTracker',
+                      style: Theme.of(context).appBarTheme.titleTextStyle,
+                    ),
                   ),
                   bottomNavigationBar: NavigationBar(
                     onDestinationSelected: (int index) {

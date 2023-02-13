@@ -18,24 +18,30 @@ class DateLog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            weekDayString,
-            style: Theme.of(context).textTheme.headline4,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          weekDayString,
+          style: Theme.of(context)
+              .textTheme
+              .headlineSmall
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 3),
+          child: Text(
+            dayNumber,
+            style: Theme.of(context)
+                .textTheme
+                .headlineLarge
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 3),
-            child: Text(
-              dayNumber,
-              style: Theme.of(context).textTheme.headline2,
-            ),
-          ),
-          Text(
-            monthString,
-            style: Theme.of(context).textTheme.headline4,
-          ),
-        ],
+        ),
+        Text(
+          monthString,
+          style: Theme.of(context)
+              .textTheme
+              .headlineSmall
+        ),
+      ],
     );
   }
 }

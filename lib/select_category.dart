@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
+import 'data/models/training.dart';
 import 'logs_screen.dart';
 import 'select_exercise.dart';
 
 class SelectCategory extends StatelessWidget {
-  const SelectCategory({Key? key}) : super(key: key);
+  final Training _training;
+
+  const SelectCategory(this._training);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +18,10 @@ class SelectCategory extends StatelessWidget {
           icon: Icon(Icons.close, color: Colors.black),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: Text("Select Exercise"),
+        title: Text(
+          "Select Exercise",
+          style: Theme.of(context).appBarTheme.titleTextStyle,
+        ),
       ),
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
@@ -26,7 +32,7 @@ class SelectCategory extends StatelessWidget {
               itemCount: ExerciseCategory.exercises.length,
               itemBuilder: (BuildContext context, int i) {
                 final category = ExerciseCategory.exercises.keys.elementAt(i);
-                var exercises; 
+                var exercises;
                 if (ExerciseCategory.exercises.containsKey(category)) {
                   exercises = ExerciseCategory.exercises[category] ?? [];
                 }
@@ -37,7 +43,7 @@ class SelectCategory extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              SelectExercise(category, exercises)),
+                              SelectExercise(_training, category, exercises)),
                     ).then((exercise) {
                       Navigator.pop(context, exercise);
                     });
@@ -46,7 +52,7 @@ class SelectCategory extends StatelessWidget {
                     padding: const EdgeInsets.all(18.0),
                     child: Text(
                       category,
-                      style: Theme.of(context).textTheme.headline3,
+                      style: Theme.of(context).textTheme.headlineMedium,
                     ),
                   ),
                 );

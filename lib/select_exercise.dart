@@ -3,17 +3,21 @@ import 'data/database.dart';
 import 'data/models/training.dart';
 
 class SelectExercise extends StatelessWidget {
+  final Training _training;
   final String category;
   final List<String> exercises;
 
-  SelectExercise(this.category, this.exercises);
+  SelectExercise(this._training, this.category, this.exercises);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text(category),
+        title: Text(
+          category,
+          style: Theme.of(context).appBarTheme.titleTextStyle,
+        ),
       ),
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
@@ -29,7 +33,7 @@ class SelectExercise extends StatelessWidget {
                         context,
                         Exercise(
                             id: 0,
-                            training_id: 0,
+                            training_id: _training.id,
                             name: exercises[i],
                             category: category,
                             sets: 0,
@@ -40,7 +44,7 @@ class SelectExercise extends StatelessWidget {
                     padding: const EdgeInsets.all(18.0),
                     child: Text(
                       exercises[i],
-                      style: Theme.of(context).textTheme.headline3,
+                      style: Theme.of(context).textTheme.headlineMedium,
                     ),
                   ),
                 );

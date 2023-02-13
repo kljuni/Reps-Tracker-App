@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import 'data/models/training.dart';
 import 'training_list_model.dart';
 
+enum ExerciseMenuItem { delete }
+
 class ExerciseForm extends StatefulWidget {
   final Exercise _exercise;
 
@@ -37,16 +39,35 @@ class _ExerciseFormState extends State<ExerciseForm> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 18),
-              child: Row(
-                children: [
-                  Text(
-                    widget._exercise.name,
-                    style: Theme.of(context).textTheme.headline3,
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 18),
+                  child: Row(
+                    children: [
+                      Text(
+                        widget._exercise.name,
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+                PopupMenuButton<ExerciseMenuItem>(onSelected: (value) {
+                  executeMenuAction(value, context);
+                }, itemBuilder: (context) {
+                  return [
+                    PopupMenuItem<ExerciseMenuItem>(
+                      child: Text(
+                        "Delete",
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelLarge?.apply(color: Colors.black)
+                      ),
+                      value: ExerciseMenuItem.delete,
+                    )
+                  ];
+                })
+              ],
             ),
             Row(
               children: <Widget>[
@@ -103,8 +124,10 @@ class _ExerciseFormState extends State<ExerciseForm> {
                         final parsedInteger = int.tryParse(value);
                         if (parsedInteger != null) {
                           Provider.of<TrainingModel>(context, listen: false)
-                              .updateRepsToExericse(widget._exercise.training_id,
-                                  widget._exercise.id, parsedInteger);
+                              .updateRepsToExericse(
+                                  widget._exercise.training_id,
+                                  widget._exercise.id,
+                                  parsedInteger);
                         }
                       },
                     ),
@@ -130,8 +153,10 @@ class _ExerciseFormState extends State<ExerciseForm> {
                       final parsedInteger = double.tryParse(value);
                       if (parsedInteger != null) {
                         Provider.of<TrainingModel>(context, listen: false)
-                            .updateWeightToExericse(widget._exercise.training_id,
-                                widget._exercise.id, parsedInteger);
+                            .updateWeightToExericse(
+                                widget._exercise.training_id,
+                                widget._exercise.id,
+                                parsedInteger);
                       }
                     },
                   ),
@@ -142,5 +167,17 @@ class _ExerciseFormState extends State<ExerciseForm> {
         ),
       ),
     );
+  }
+
+  executeMenuAction(ExerciseMenuItem action, BuildContext context) {
+    switch (action) {
+      case ExerciseMenuItem.delete:
+        {
+          Provider.of<TrainingModel>(context, listen: false)
+              .deleteExercise(widget._exercise);
+          Navigator.pop(context);
+        }
+        break;
+    }
   }
 }
