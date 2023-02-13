@@ -55,12 +55,14 @@ class _TrainingFormState extends State<TrainingForm> {
                     child: Padding(
                       padding: const EdgeInsets.only(right: 5),
                       child: TextFormField(
+                        maxLength: 30,
                         controller: _nameController,
                         style: TextStyle(fontSize: 18),
                         decoration: InputDecoration(
                             contentPadding: EdgeInsets.all(15),
                             isDense: true,
-                            labelText: 'Name'),
+                            labelText: 'Name',
+                            counterText: "",),
                         validator: (value) {
                           if (value == null || value.length == 0) {
                             return 'Please enter a name';

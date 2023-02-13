@@ -123,11 +123,19 @@ class TrainingModel extends ChangeNotifier {
     }
   }
 
-  void deleteExercise(Exercise exercise) {
-    // var training = _trainings.firstWhere((item) => item.id == exercise.training_id);
-    // training.exercises.add(exercise);
-    // // ignore: todo
-    // // TODO, add error managament if id not found
-    // notifyListeners();
+  void deleteExercise(Exercise exercise) async {
+    try {
+      final success = await DbManager().deleteExercise(exercise);
+      if (success) {
+        var training = _trainings.firstWhere((item) => item.id == exercise.training_id);
+        training.exercises.removeWhere((item) => item.id == exercise.id);
+        notifyListeners();
+      } else {
+        throw Exception("Could not delete exercise");
+      }
+      
+    } catch (e) {
+      print("Error deleting exercise: $e");
+    }
   }
 }

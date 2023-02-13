@@ -160,4 +160,19 @@ class DbManager {
       whereArgs: [exercise.id],
     );
   }
+
+  Future<bool> deleteExercise(Exercise exercise) async {
+    try {
+      final result = await (await db).delete(
+      'exercise',
+      where: "id = ?",
+      whereArgs: [exercise.id],
+    );
+
+      return result > 0;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
 }

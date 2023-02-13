@@ -33,41 +33,37 @@ class _ExerciseFormState extends State<ExerciseForm> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+      padding: EdgeInsets.only(bottom: 15, left: 15, right: 15),
       child: Form(
         key: _formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 18),
-                  child: Row(
-                    children: [
-                      Text(
-                        widget._exercise.name,
-                        style: Theme.of(context).textTheme.headlineMedium,
-                      ),
-                    ],
+            Padding(
+              padding: const EdgeInsets.only(bottom: 15),
+              child: Row(
+                children: [
+                  Text(
+                    widget._exercise.name,
+                    style: Theme.of(context).textTheme.headlineMedium,
                   ),
-                ),
-                PopupMenuButton<ExerciseMenuItem>(onSelected: (value) {
-                  executeMenuAction(value, context);
-                }, itemBuilder: (context) {
-                  return [
-                    PopupMenuItem<ExerciseMenuItem>(
-                      child: Text(
-                        "Delete",
-                        style: Theme.of(context)
-                            .textTheme
-                            .labelLarge?.apply(color: Colors.black)
-                      ),
-                      value: ExerciseMenuItem.delete,
-                    )
-                  ];
-                })
-              ],
+                  Spacer(),
+                  PopupMenuButton<ExerciseMenuItem>(onSelected: (value) {
+                    executeMenuAction(value, context);
+                  }, itemBuilder: (context) {
+                    return [
+                      PopupMenuItem<ExerciseMenuItem>(
+                        child: Text("Delete",
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelLarge
+                                ?.apply(color: Colors.black)),
+                        value: ExerciseMenuItem.delete,
+                      )
+                    ];
+                  })
+                ],
+              ),
             ),
             Row(
               children: <Widget>[
@@ -175,7 +171,6 @@ class _ExerciseFormState extends State<ExerciseForm> {
         {
           Provider.of<TrainingModel>(context, listen: false)
               .deleteExercise(widget._exercise);
-          Navigator.pop(context);
         }
         break;
     }
