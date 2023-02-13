@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_experiments/data/database.dart';
-import 'package:flutter_experiments/training_list_model.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import 'data/models/training.dart';
-import 'utils/helpers/text_helpers.dart';
+import '../data/models/training.dart';
+import 'training_list_model.dart';
 
 class TrainingForm extends StatefulWidget {
   final Training _training;

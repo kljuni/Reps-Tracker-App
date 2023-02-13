@@ -1,13 +1,11 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
-import 'data/database.dart';
-import 'data/models/training.dart';
+import '../data/database.dart';
+import '../data/models/training.dart';
 
 class TrainingModel extends ChangeNotifier {
-  /// Internal, private state of the cart.
   final List<Training> _trainings = [];
 
-  /// An unmodifiable view of the items in the cart.
   UnmodifiableListView<Training> get allTrainings =>
       UnmodifiableListView(_trainings);
 
@@ -50,32 +48,28 @@ class TrainingModel extends ChangeNotifier {
     }
   }
 
-  void addSetToExericse(int trainingId, int exerciseId, [int sets = 1]) async {
-    try {
-      var training = _trainings.firstWhere((item) => item.id == trainingId);
-      var exercise =
-          training.exercises.firstWhere((item) => item.id == exerciseId);
-      exercise.sets += sets;
-      await DbManager().updateExercise(exercise);
-    } catch (e) {
-      print("Error adding sets to exericse: $e");
-    }
-
-    notifyListeners();
-  }
-
   void updateSetsToExericse(int trainingId, int exerciseId, int sets) async {
     try {
       var training = _trainings.firstWhere((item) => item.id == trainingId);
       var exercise =
           training.exercises.firstWhere((item) => item.id == exerciseId);
-      exercise.sets = sets;
-      await DbManager().updateExercise(exercise);
+      final exerciseUpdate = Exercise(
+          id: exerciseId,
+          training_id: trainingId,
+          name: exercise.name,
+          category: exercise.category,
+          sets: sets,
+          reps: exercise.reps,
+          weight: exercise.weight);
+      final success = await DbManager().updateExercise(exerciseUpdate);
+      if (success) {
+        final index = training.exercises.indexWhere((item) => item.id == exerciseId);
+        training.exercises.replaceRange(index, index +1, [exerciseUpdate]);
+        notifyListeners();
+      }
     } catch (e) {
       print("Error adding sets to exericse: $e");
     }
-
-    notifyListeners();
   }
 
   void updateRepsToExericse(int trainingId, int exerciseId, int reps) async {
@@ -83,25 +77,45 @@ class TrainingModel extends ChangeNotifier {
       var training = _trainings.firstWhere((item) => item.id == trainingId);
       var exercise =
           training.exercises.firstWhere((item) => item.id == exerciseId);
-      exercise.reps = reps;
-      await DbManager().updateExercise(exercise);
+      final exerciseUpdate = Exercise(
+          id: exerciseId,
+          training_id: trainingId,
+          name: exercise.name,
+          category: exercise.category,
+          sets: exercise.sets,
+          reps: reps,
+          weight: exercise.weight);
+      final success = await DbManager().updateExercise(exerciseUpdate);
+      if (success) {
+        training.exercises.removeWhere((item) => item.id == exerciseId);
+        training.exercises.add(exerciseUpdate);
+        notifyListeners();
+      }
     } catch (e) {
-      print("Error adding reps to exericse: $e");
+      print("Error adding sets to exericse: $e");
     }
-
-    notifyListeners();
   }
 
-  void updateWeightToExericse(
-      int trainingId, int exerciseId, double weight) async {
+  void updateWeightToExericse( int trainingId, int exerciseId, double weight) async {
     try {
       var training = _trainings.firstWhere((item) => item.id == trainingId);
       var exercise =
           training.exercises.firstWhere((item) => item.id == exerciseId);
-      exercise.weight = weight;
-      await DbManager().updateExercise(exercise);
+      final exerciseUpdate = Exercise(
+          id: exerciseId,
+          training_id: trainingId,
+          name: exercise.name,
+          category: exercise.category,
+          sets: exercise.sets,
+          reps: exercise.reps,
+          weight: weight);
+      final success = await DbManager().updateExercise(exerciseUpdate);
+      if (success) {
+        training.exercises.removeWhere((item) => item.id == exerciseId);
+        training.exercises.add(exerciseUpdate);
+      }
     } catch (e) {
-      print("Error adding reps to exercise: $e");
+      print("Error adding sets to exericse: $e");
     }
 
     notifyListeners();
@@ -109,15 +123,11 @@ class TrainingModel extends ChangeNotifier {
 
   void addExercise(Exercise exercise) async {
     try {
-      final success = await DbManager().createNewExercise(exercise);
-      if (success) {
-        var training = _trainings.firstWhere((item) => item.id == exercise.training_id);
-        training.exercises.add(exercise);
-        notifyListeners();
-      } else {
-        throw Exception("Could not add exercise");
-      }
-      
+      final createdExercise = await DbManager().createNewExercise(exercise);
+      var training =
+          _trainings.firstWhere((item) => item.id == exercise.training_id);
+      training.exercises.add(createdExercise);
+      notifyListeners();
     } catch (e) {
       print("Error adding exercise: $e");
     }
@@ -127,13 +137,13 @@ class TrainingModel extends ChangeNotifier {
     try {
       final success = await DbManager().deleteExercise(exercise);
       if (success) {
-        var training = _trainings.firstWhere((item) => item.id == exercise.training_id);
+        var training =
+            _trainings.firstWhere((item) => item.id == exercise.training_id);
         training.exercises.removeWhere((item) => item.id == exercise.id);
         notifyListeners();
       } else {
         throw Exception("Could not delete exercise");
       }
-      
     } catch (e) {
       print("Error deleting exercise: $e");
     }

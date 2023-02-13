@@ -22,11 +22,11 @@ class Training {
 class Exercise {
   final int id;
   final int training_id;
-  String name;
+  final String name;
   final String category;
-  int sets;
-  int reps;
-  double weight;
+  final int sets;
+  final int reps;
+  final double weight;
 
   Exercise({
     required this.id,

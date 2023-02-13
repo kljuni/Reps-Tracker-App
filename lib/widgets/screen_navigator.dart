@@ -1,14 +1,12 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'data/database.dart';
-import 'data/models/training.dart';
+import '../data/database.dart';
+import '../data/models/training.dart';
 import 'logs_screen.dart';
 import 'training_details.dart';
 import 'training_list_model.dart';
-import 'utils/helpers/text_helpers.dart';
+import '../utils/helpers/text_helpers.dart';
 
 class ScreenNavigator extends StatefulWidget {
   @override
@@ -62,29 +60,19 @@ class _ScreenNavigatorState extends State<ScreenNavigator> {
                       NavigationDestination(
                         icon: Icon(Icons.calendar_month),
                         label: 'Calendar',
-                      ),
-                      NavigationDestination(
-                        icon: Icon(Icons.fitness_center),
-                        label: 'Routines',
-                      ),
+                      )
                     ],
                   ),
                   body: <Widget>[
                     Container(
-                      // color: Colors.red,
                       alignment: Alignment.center,
                       child: Logs(_trainingsModel),
                     ),
                     Container(
-                      color: Colors.green,
                       alignment: Alignment.center,
-                      child: const Text('Page 2'),
-                    ),
-                    Container(
-                      color: Colors.blue,
-                      alignment: Alignment.center,
-                      child: const Text('Page 3'),
-                    ),
+                      child: Text('Work in progress.',
+                          style: Theme.of(context).textTheme.headlineLarge),
+                    )
                   ][currentPageIndex],
                   floatingActionButton: currentPageIndex == 0
                       ? FloatingActionButton(

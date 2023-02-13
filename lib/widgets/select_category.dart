@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'data/models/training.dart';
+import '../data/models/training.dart';
 import 'logs_screen.dart';
 import 'select_exercise.dart';
 

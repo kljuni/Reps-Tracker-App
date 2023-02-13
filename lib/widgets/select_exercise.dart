@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'data/database.dart';
-import 'data/models/training.dart';
+import '../data/models/training.dart';
 
 class SelectExercise extends StatelessWidget {
   final Training _training;

@@ -113,19 +113,21 @@ class DbManager {
     return trainings;
   }
 
-  // Future<int> createNewExercise(int trainingId, Exercise exercise) async {
-  //   return (await db).insert("exercise", exercise.toMap(trainingId));
-  // }
-  
-  Future<bool> createNewExercise(Exercise exercise) async {
-      try {
-      final result = await (await db).insert("exercise", exercise.toMap(exercise.training_id));
+  Future<Exercise> createNewExercise(Exercise exercise) async {
+    final insertedId = await (await db)
+        .insert("exercise", exercise.toMap(exercise.training_id));
 
-      return result > 0;
-    } catch (e) {
-      print(e);
-      return false;
-    }
+    final List<Map<String, dynamic>> insertedExercise = await (await db)
+        .query("exercise", where: "id = ?", whereArgs: [insertedId]);
+
+    return Exercise(
+        id: insertedExercise[0]['id'],
+        training_id: insertedExercise[0]['training_id'],
+        name: insertedExercise[0]['name'],
+        category: insertedExercise[0]['category'],
+        sets: insertedExercise[0]['sets'],
+        reps: insertedExercise[0]['reps'],
+        weight: insertedExercise[0]['weight']);
   }
 
   Future<void> updateTraining(Training training) async {
@@ -152,22 +154,29 @@ class DbManager {
     }
   }
 
-  Future<void> updateExercise(Exercise exercise) async {
-    (await db).update(
-      'exercise',
-      exercise.toMapWithoutTrainingId(),
-      where: "id = ?",
-      whereArgs: [exercise.id],
-    );
+  Future<bool> updateExercise(Exercise exercise) async {
+    try {
+      final result = await (await db).update(
+        'exercise',
+        exercise.toMapWithoutTrainingId(),
+        where: "id = ?",
+        whereArgs: [exercise.id],
+      );
+
+      return result > 0;
+    } catch (e) {
+      print(e);
+      return false;
+    }
   }
 
   Future<bool> deleteExercise(Exercise exercise) async {
     try {
       final result = await (await db).delete(
-      'exercise',
-      where: "id = ?",
-      whereArgs: [exercise.id],
-    );
+        'exercise',
+        where: "id = ?",
+        whereArgs: [exercise.id],
+      );
 
       return result > 0;
     } catch (e) {

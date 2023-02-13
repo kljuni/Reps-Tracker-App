@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_experiments/exercise_list.dart';
-import 'package:flutter_experiments/training_form.dart';
-import 'package:flutter_experiments/training_list_model.dart';
 
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import 'data/models/training.dart';
+import '../data/models/training.dart';
+import 'exercise_list.dart';
+import 'training_form.dart';
+import 'training_list_model.dart';
 
 enum TrainingMenuItem { delete }
 
