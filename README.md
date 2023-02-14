@@ -17,7 +17,7 @@ A Mobile App for Tracking Reps in our workouts. Easily add completed sets to the
 # Getting started
 To get the app running locally:
 - Clone this repo
-- Move to /assets dir and create database with `sqlite3 training.db`
+- Move to /assets dir and create a database with `sqlite3 training.db` and then in sqlite `.databases`, after that exit the database
 - Install dependencies, in root execute `flutter pub get`
 - Have a virtual device running or a mobile device connected
 - Run the App `flutter run`
