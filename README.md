@@ -1,16 +1,23 @@
-# flutter_complete_guide
+# Reps Tracker App
+A Mobile App for Tracking Reps in our workouts. Easily add completed sets to the exercise by swiping it.
 
-A new Flutter project.
+## Tech Stack
+- Flutter
+- SQLite
 
-## Getting Started
+## Features
+- Users can add trainings with exercises
+- Exercises can be swiped to add a new completed set to that exercise
 
-This project is a starting point for a Flutter application.
+## Prerequisites
+- Flutter SDK installed
+- Android or iOS environment setup (virtual or a mobile device)
+- SQLite command line tool installed
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# Getting started
+To get the app running locally:
+- Clone this repo
+- Move to /assets dir and create database with `sqlite3 training.db`
+- Install dependencies, in root execute `flutter pub get`
+- Have a virtual device running or a mobile device connected
+- Run the App `flutter run`

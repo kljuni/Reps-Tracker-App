@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_experiments/data/database.dart';
+import '../data/database.dart';
 
 import 'widgets/screen_navigator.dart';
 

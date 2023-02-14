@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_experiments/data/database.dart';
+import '../data/database.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
